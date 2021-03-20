@@ -1,0 +1,32 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Metadata:
+    Generator: "TODO"
+Description: "Create EC2 for script execution"
+Parameters:
+  InstanceTypeParameter:
+    Type: String
+    Default: t2.micro
+    AllowedValues:
+      - t2.micro
+      - t2.medium
+    Description: Enter t2.micro, t2.medium. Default is t2.micro.
+Resources:
+    EC2Instance:
+        Type: "AWS::EC2::Instance"
+        Properties:
+            ImageId: "ami-038f1ca1bd58a5790"
+            InstanceType: 
+              Ref: InstanceTypeParameter
+            AvailabilityZone: "us-east-1b"
+            SubnetId: "subnet-1792365f"
+            EbsOptimized: false
+            SecurityGroupIds: 
+              - "sg-14ae545d"
+            SourceDestCheck: true
+            Tags: 
+              - 
+                Key: "Name"
+                Value: "deepracer sandbox"
+              - 
+                Key: "Project"
+                Value: "deepracer sandbox"   
