@@ -15,10 +15,10 @@ Parameters:
     Description: Enter t2.micro, t2.medium. Default is t2.micro.
   ImageIdParameter:
     Type: String
-    Default: ami-0b75998a97c952252
+    Default: ami-042e8287309f5df03 
     AllowedValues:
-      - ami-0b75998a97c952252
-    Description: ami-0b75998a97c952252 is Ubuntu 20.04 in us-east-1
+      - ami-042e8287309f5df03 
+    Description: ami-042e8287309f5df03 is x86 Ubuntu 20.04 in us-east-1
 Resources:
     EC2Instance:
         Type: "AWS::EC2::Instance"
@@ -28,12 +28,22 @@ Resources:
             KeyName: !Ref KeyNameParameter 
             AvailabilityZone: "us-east-1b"
             SubnetId: "subnet-1792365f"
+            BlockDeviceMappings:
+              - DeviceName: /dev/sda1
+                Ebs:
+                  VolumeSize: 50
             EbsOptimized: false
             SecurityGroupIds: 
               - "sg-14ae545d"
             SourceDestCheck: true
             UserData:
               Fn::Base64: !Sub |
+                 #!/bin/bash -ex
+                 apt-get update -y
+                 apt-get upgrade -y
+                 apt-get install git -y
+                 git clone https://github.com/aws-deepracer-community/deepracer-for-cloud.git
+                 cd /deepracer-for-cloud && ./bin/prepare.sh
                  echo hello >> /tmp/hello.txt
             Tags: 
               - 
